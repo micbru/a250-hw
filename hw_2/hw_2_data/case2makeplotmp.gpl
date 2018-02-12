@@ -1,0 +1,59 @@
+#Make a 2x3 plot that has the potential and magnetic energy densities for case two.
+set terminal postscript eps enhanced font 'Verdana,9' color
+set output 'case2mp.eps'
+
+set macros
+# Margins for each row resp. column
+TMARGIN = "set tmargin at screen 0.90; set bmargin at screen 0.75"
+BMARGIN = "set tmargin at screen 0.62; set bmargin at screen 0.47"
+LMARGIN = "set lmargin at screen 0.19; set rmargin at screen 0.34"
+MMARGIN = "set lmargin at screen 0.48; set rmargin at screen 0.63"
+RMARGIN = "set lmargin at screen 0.77; set rmargin at screen 0.92"
+
+# Place titles
+set label 1 "Initial" at screen 0.265,0.95 center
+set label 2 "Intermediate" at screen 0.555,0.95 center
+set label 3 "Final" at screen 0.845,0.95 center
+set label 4 "Potential\nEnergy\nDensity" at screen 0.05,0.825 center
+set label 5 "Magnetic\nEnergy\nDensity" at screen 0.05,0.545 center
+
+# Set plot parameters
+set pm3d; set palette rgb 33,13,10; set ticslevel 0; unset surface;
+set xrange[-40:40]; set yrange[-40:40]; 
+set xlabel 'z'; set ylabel 'x';
+set xtics 20 offset 0,-0.5; set ytics 20 offset 0.5,0;
+unset key;
+
+set multiplot layout 2,3 rowsfirst
+
+set zrange[-1:45]; set ztics 10; set cbrange[0:45]; set cbtics 20
+#set zlabel '|{/Symbol F}|'
+
+@TMARGIN; @LMARGIN
+unset colorbox
+splot 'case2mp.501' u 1:2:4
+
+@TMARGIN; @MMARGIN
+splot 'case2mp.512' u 1:2:4
+
+@TMARGIN; @RMARGIN
+set colorbox
+splot 'case2mp.519' u 1:2:4
+
+
+set zrange[0:570]; set ztics 100; set logscale cb; set cbrange[0.5:570]; set cbtics (1,10,100,500)
+#set zlabel 'U_B'
+
+@BMARGIN; @LMARGIN
+unset colorbox
+splot 'case2mp.501' u 1:2:3
+
+@BMARGIN; @MMARGIN
+set zrange[0:20]; set ztics 10;
+splot 'case2mp.512' u 1:2:3
+
+@BMARGIN; @RMARGIN
+set colorbox
+splot 'case2mp.519' u 1:2:3
+
+unset multiplot

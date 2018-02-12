@@ -1,0 +1,25 @@
+#Make a vector plot of the phi field to see how the anti-winding appears.
+set terminal postscript eps enhanced color
+
+set size square
+set xrange[-64:64]; set yrange[-64:64]; set pm3d; set palette rgb 33,13,10;
+set xlabel 'z'; set ylabel 'x';
+#set colorbox vertical user origin 1,0
+unset colorbox
+# set cbrange[-1:1]
+unset key;
+# Set arrow size
+h = 8
+dx(phi) = h*cos(phi)
+dz(phi) = h*sin(phi)
+
+# Data is stored as z,x,phi1,phi2,phi3,phi4,phi5,phi6. Want to print atan(phi3/phi1). atan2 is fully defined inverse polar coords.
+do for [i=0:9] {
+	set output 'Movies/phi'.i.'.eps'
+	plot 'fort.70'.i u ($1-dz(atan2($5,$3))/2.0):($2-dx(atan2($5,$3))/2.0):(dz(atan2($5,$3))):(dx(atan2($5,$3))):(sqrt($3**2+$4**2+$5**2)) with vectors head size 1,20,60 filled lc palette
+}
+
+do for [i=10:60] {
+	set output 'Movies/phi'.i.'.eps'
+	plot 'fort.7'.i u ($1-dz(atan2($5,$3))/2.0):($2-dx(atan2($5,$3))/2.0):(dz(atan2($5,$3))):(dx(atan2($5,$3))):(sqrt($3**2+$4**2+$5**2)) with vectors head size 1,20,60 filled lc palette
+}
