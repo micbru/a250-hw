@@ -1,3 +1,13 @@
+# json file for cloud access:
+# This is for hw3 to get speech to text working.
+MyFirstProject-c5d149b85549.json
+
+# My credentials for email:
+my_credential.py
+
+# Also for hw3 to prevent all the sound files.
+*.aif
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -99,3 +109,9 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+# Latex
+*.log
+*.out
+*.aux
+*.gz
