@@ -1,0 +1,14 @@
+The solution for problem 1 is structured such that functions are defined, then the monty function is defined, which will take in voice commands and then either calculate some maths, send an email, or tell a joke.
+
+The way it works is it looks for the keyword of "calculate", "email", or "joke".
+If "Calculate": It can take any number as well as plus, minus, times, or divided by as operators.
+If "Email": It will email my bmail account. By default it will have subject "From Python" and will just put in the text that it is given. If you say the word "subject" and "body", it will take everything between "subject" and "body" and use that as the subject, and everything after "body" as body.
+
+IMPORTANT: The voice recognition software it uses is the CLOUD SPEECH API from Google. To get this to work, you have to set your environment in the terminal in the same folder as the ipynb, before you open the ipynb. Use: 
+export GOOGLE_APPLICATION_CREDENTIALS="__PATH TO JSON FILE WITH CREDENTIALS__"
+
+IMPORTANT: Also for Monty to work, you have to include a my_credentials.py file that contains: 
+GMAIL_USERNAME = "...."
+GMAIL_PASSWORD = "...."
+
+
