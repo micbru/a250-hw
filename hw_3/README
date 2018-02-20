@@ -11,4 +11,6 @@ IMPORTANT: Also for Monty to work, you have to include a my_credentials.py file 
 GMAIL_USERNAME = "...."
 GMAIL_PASSWORD = "...."
 
-
+For problem 2:  I did not check in the aiff files, so you will have to put them in a folder ./sound_files to get it to work.
+		My code can also only do 2 notes at maximum, since that seems to be what is necessary.
+		It will also always output a plot since I coudln't figure out how to turn that off, but at the bottom of the file I tabulated my results.
