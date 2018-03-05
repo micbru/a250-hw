@@ -1,0 +1,51 @@
+Your score: 14/17
+
+Breakdown & Comments: 
+
+Thanks for providing a README telling me where to look for things!
+
+----------------------------------------
+Problem 1: 5/5
+----------------------------------------
+1/1: plot with caption
+4/4: analysis
+
+I think it's actually a problem that one needs to consult the
+caption for so much information. When analyzing the most important plot
+of your own or any paper, consider not only the experience someone will
+have when encountering this within the manuscript but also the experience 
+so many people will have trying to use your game-changing plot in a talk. 
+It sounds like the caption is really useful for the first case. And you
+have addressed aesthetic issues (typesetting and colors) related to
+the second. But for showing a story at a glance, it is really important to,
+for instance, label the dashed line on the plot. Or have a legend to let
+people *know* that the red curve is Lambda-CDM (and what the heck the 
+green stuff is). 
+
+----------------------------------------
+Problem 2: 4/7 
+----------------------------------------
+3/3: Recreated plot
+2/3: New dynamic interactions
+0/1: Analysis of changes
+-1 export issues
+
+Did you test this with a fresh kernel? You have a variable "length" used that
+is undefined in the code, so I had to rewrite your code to run it. 
+Well, it's defined in the cells that I was instructed to
+ignore... so yeah, pretty confused. It only affects the color mapping I think?
+
+I don't see any text explaining what you were trying to do or why (I see that you 
+were trying to combine two panels but I don't know why or how the implementation
+helps with illustrating a concept). 
+
+Wouldn't it have been good to link the panels so that when I zoom in on one section
+of parameter space in one panel I can compare between all three? 
+
+----------------------------------------
+Problem 3: 5/5
+----------------------------------------
+5/5: Reproduced plot: title, twin_x, legend, limits, linestyles
+
+
+Graded by C. E. Harris
