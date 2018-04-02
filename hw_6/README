@@ -1,0 +1,8 @@
+This homework tries to classify images using a random forest classifier from a test set of 50 different categories of images.
+
+This is all done in hw6.ipynb. That file contains a summary at the top of what I did, what my most important features are, and my best success rate.
+
+To run the final classifier as asked for in the homework, scroll to the bottom of hw6.ipynb, change the path to the desired path of new images, and run that cell. 
+It reads in the features.txt and labels.txt I already got from feature extraction. I included these text files because the feature extraction is very slow, and I did not check the test set into git. That means the code will not work unless the "50_categories" folder is added to the same directory.
+
+Thanks! I hope this all makes sense. 
