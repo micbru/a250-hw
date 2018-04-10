@@ -1,0 +1,7 @@
+The Jupyter Notebook here is fairly straightforward. The first part of the assignment uses data from skimage and should run easily.
+
+For the second part of the assignment I checked in the images I used to build my panorama, as well as the panorama itself. I also added a few lines at the end to crop the black parts away from the panorama to make it prettier. This file is also checked in.
+A note on the panorama part: Because RANSAC is random, it doesn't work every time. If the third image can't match appropriately to the second one, rerun the code from RANSAC and it should work. Because of this, the cropping in the final line must be redone by hand every time as well. While I could have written a function for this, it is kind of by eye anyway because just eliminating the black parts isn't always what I want to do.
+Another note: This notebook seems to take an absurd amount of memory for the panorama part. I assume this is just because my images are quite large, since I mainly took all of the code from the example. But be careful! I kept running out of space and having to restart the kernel, but it should be ok to run through once.
+
+Thanks!
