@@ -1,4 +1,4 @@
-This is the code submitted for my final project. After the initial commit, here is a list of things that I will do as part of my project:
+This is the code submitted for my final project. After the initial commit (34ab28d7104c7a97bf6ad3e6035c24959cfa930b, Wed May 2 15:20:50 2018 -0700), here is a list of things that I will do as part of my project:
 - I will make a plotting notebook, rather than a plot.py file, and include interactive plots made in bokeh that I can save from the notebook.
 - I will make a dask version of analysis.py.
 - I will make a testing suite for each function in analysis. This will require getting a test data set from NERSC that I can use.
