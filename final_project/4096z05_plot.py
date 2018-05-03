@@ -10,12 +10,12 @@ WHIM_data = np.loadtxt(path+'/WHIM_data.txt',usecols=range(3,29)) # Unpack the 2
 
 # Get m200 and m180 data also.
 # Read in:
-IDs, m, r, m200, r200, m180, r180 = np.loadtxt('../haloCatalogAppending/4096z05/catalog_iso138_200_180.txt',usecols=(0,4,5,6,7,8,9),unpack=True)
+IDs, m, r, m200, r200, m180, r180 = np.loadtxt('./catalogs/catalog_iso138_200_180.txt',usecols=(0,4,5,6,7,8,9),unpack=True)
 
 # We need to cut off by halo ID to make sure we have the same size array as WHIM size!
 # Since that array is sorted we know it is the first halo
-min_halo_ID = halo_ID[0]
-
+min_halo_ID_arg = np.where(m==min(m[m>10**12]))[0]
+min_halo_ID = IDs[min_halo_ID_arg]
 sort_i = m.argsort()
 m.sort()
 r = r[sort_i]
@@ -39,9 +39,8 @@ convert_pt_Mpc = size/l
 r *= convert_pt_Mpc
 r200 *= convert_pt_Mpc
 r180 *= convert_pt_Mpc
-
 i_cutoff = int(np.where(IDs==min_halo_ID)[0])
-
+print(i_cutoff)
 if False:
     # Get size and redshift:
     path_to_data = "/global/cscratch1/sd/zarija/4096/z05.h5"
@@ -58,7 +57,7 @@ if False:
 
 # Plot WHIMsize
 ID = 'iso138' # This is the catalog we used.
-plot.WHIMsize_HaloMass_plot(m,r,WHIM_data,ID,path)
+plot.WHIMsize_HaloMass_plot(m[i_cutoff::],r[i_cutoff::],WHIM_data,ID,path)
 
 ID = 'iso138_m200'
 plot.WHIMsize_HaloMass_plot(m200[i_cutoff::],r200[i_cutoff::],WHIM_data,ID,path)
