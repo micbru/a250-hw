@@ -52,7 +52,3 @@ plot.WHIMsize_HaloMass_plot(m200,r200,WHIM_data,ID,path)
 
 ID = 'iso138_m180'
 plot.WHIMsize_HaloMass_plot(m180,r180,WHIM_data,ID,path)
-
-# Check halos are the same:
-#print("Halo ID problems for m200: {}, for m180: {}".format(np.count_nonzero(ID200[i_cutoff::]-halo_ID),np.count_nonzero(ID180[i_cutoff::]-halo_ID)))
-#print("Halo ID: {}, 200: {}, 180: {}".format(halo_ID[0:5],ID200[i_cutoff:(i_cutoff+5)],ID180[i_cutoff:(i_cutoff+5)])) 

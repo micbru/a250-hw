@@ -6,3 +6,5 @@ This is the code submitted for my final project. After the initial commit (34ab2
 - I may try to implement some cython, if it makes sense.
 
 The directory is set up so that each of the two large files I analyze has it’s own folder (2048z3 and 4096z05) for data and plots. catalogs will contain the required halo catalogs, and data will include the subset of test data I am using.
+
+There are also several python notebooks for testing out new implementations, as well as troubleshooting.
