@@ -166,14 +166,10 @@ if __name__ == '__main__':
     WHIM_data = np.loadtxt(path+'/WHIM_data.txt',usecols=range(3,29)) # Unpack the 26 directions of WHIM_data
     
     # Get size and redshift:
-    path_to_data = "/global/cscratch1/sd/zarija/Bispectrum/z3_2048.h5"
-    f = h5py.File(path_to_data)
-    fsize = f['domain']
-    f_universe = f['universe']
-    # Get the length of the array (shape) and the physical size in Mpc/h (size):
-    size = fsize.attrs['size'][0] # Need the zero since these are in 3D.
-    # Get redshift:
-    z = f_universe.attrs['redshift']
+    path_to_data = path+"universe_data.txt"
+    u_data = np.loadtxt(path_to_data)
+    size = u_data[1]
+    z = u_data[2]
 
     # Plot mass fraction
     box_mass_fraction_plot(mWHIM,mCond,mDif,mHalo,size,z,path)
