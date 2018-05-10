@@ -1,3 +1,3 @@
 Here I will summarize what I accomplished in this project, and how that relates to my initial goals.
 
-Dask version for test set was much slower, but for 2048 dataset went from ~5m to ~5s (for the WHIM sizes). However, when I included the mass fraction function, it went back up to ~7m.
+Dask version for test set was much slower, but for 2048 dataset went from ~5m to ~5s (for the WHIM sizes). However, when I included the mass fraction function, it went back up to ~7m. It turns out that isn't the good way to do it, but the WHIM size way seems to be better.
