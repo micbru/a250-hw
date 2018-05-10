@@ -24,9 +24,9 @@ def main(path_to_data,path_to_catalog,output_mass_frac,output_WHIM_data):
     mass_fraction, WHIM_data, WHIM_troubleshoot = analyze(rho_bar,temp,halo_data,l,size)
     
     # Output to text.
-#    np.savetxt(output_mass_frac,mass_fraction)
-    np.savetxt(output_WHIM_data,WHIM_data)
-    np.savetxt(output_WHIM_data+'.troubleshoot.txt',WHIM_troubleshoot)
+#    np.savetxt(output_mass_frac,mass_fraction,header='mWHIM,mCond,mDif,mHalo)
+    np.savetxt(output_WHIM_data,WHIM_data,header='ID, mass, radius (Mpc/h), WHIM sizes (Mpc/h)')
+    np.savetxt(output_WHIM_data+'.troubleshoot.txt',WHIM_troubleshoot,header='ID, n halo bdry, n WHIM bdry, n no WHIM')
     
 
 def read_data(path_to_data):
@@ -108,8 +108,8 @@ def analyze(rho_bar,temp,halo_data,l,size):
     # Define the box sizes we will be using.
     bl = int(l/4)   # Box length. The magic number 4 is because we want 64 boxes.
     nb = int(l/bl)  # Number of boxes along one dimension
-    large_halo = max(halo_data[:,5]) # Find the largest halo
-    buf = int(6*large_halo) # Use a buffer of magic number*the largest halo radius
+#    large_halo = max(halo_data[:,5]) # Find the largest halo
+#    buf = int(6*large_halo) # Use a buffer of magic number*the largest halo radius
 
     # Initialize the arrays that will store the mean for each box.
     mWHIM = 0#np.zeros(nb**3)
@@ -120,7 +120,7 @@ def analyze(rho_bar,temp,halo_data,l,size):
     # Initialize the array for the WHIM sizes
     # 29 is a magic number: we have 26 directions, plus we want halo ID, halo mass, and halo radius
     WHIM_data = np.zeros([len(halo_data),29])
-    WHIM_troubleshoot = np.zeros([len(halo_data)])#,3])
+    WHIM_troubleshoot = np.zeros([len(halo_data),4])
 
     # Now loop for each box
     # This is density per pixel * size of 1 pixel / (avg density in box * box volume)
@@ -132,14 +132,8 @@ def analyze(rho_bar,temp,halo_data,l,size):
                 ii = i*bl
                 jj = j*bl
                 kk = k*bl
-                # We only have to use take if we have i,j,k = 0 or i,j,k = nb-1
-                if ((i == 0) | (j == 0) | ( k== 0) | (i == nb-1) | (j == nb-1) | (k == nb-1)):
-                    rho_sub = rho_bar[range(ii-buf,ii+bl+buf+1),0,0]#,range(jj-buf,jj+bl+buf+1),range(kk-buf,kk+bl+buf+1)]
-                    t_sub = temp[range(ii-buf,ii+bl+buf+1),0,0]#,range(jj-buf,jj+bl+buf+1),range(kk-buf,kk+bl+buf+1)]
-                else:
-                    print(ii,jj,kk,bl,buf)
-                    rho_sub = rho_bar[ii-buf:ii+bl+buf,jj-buf:jj+bl+buf,kk-buf:kk+bl+buf]
-                    t_sub = temp[ii-buf:ii+bl+buf,jj-buf:jj+bl+buf,kk-buf:kk+bl+buf]
+                rho_sub = rho_bar[ii:ii+bl+1,jj:jj+bl+1,kk:kk+bl+1]
+                t_sub = temp[ii:ii+bl+1,jj:jj+bl+1,kk:kk+bl+1]
                 # Use mass_fraction function, only reading in without buffer
 #                mWHIM[i+nb*j+nb*nb*k], mCond[i+nb*j+nb*nb*k], mDif[i+nb*j+nb*nb*k], mHalo[i+nb*j+nb*nb*k] = mass_fraction(rho_sub[buf:-buf,buf:-buf,buf:-buf],t_sub[buf:-buf,buf:-buf,buf:-buf],bl)
 
@@ -152,7 +146,7 @@ def analyze(rho_bar,temp,halo_data,l,size):
                 for q in halo_list:
                     WHIM_data[q,0:3] = halo_data[q,3::]
                     # Correct halo locations in the sub box.
-                    WHIM_data[q,3::], n_halo_bdry, n_WHIM_bdry, n_noWHIM = WHIM_size(rho_sub,t_sub,l,size,halo_data[q,0]-ii+buf,halo_data[q,1]-jj+buf,halo_data[q,2]-kk+buf,halo_data[q,5])
+                    WHIM_data[q,3::], n_halo_bdry, n_WHIM_bdry, n_noWHIM = WHIM_size(rho_sub,t_sub,l,size,halo_data[q,0]-ii,halo_data[q,1]-jj,halo_data[q,2]-kk)
                     # Set WHIM_data halo_r to physical units:
                     WHIM_data[q,2] *= size/l
                     # Save troubleshooting information:

@@ -24,9 +24,9 @@ def main(path_to_data,path_to_catalog,output_mass_frac,output_WHIM_data):
     mass_fraction, WHIM_data, WHIM_troubleshoot = analyze(rho_bar,temp,halo_data,l,size)
     
     # Output to text.
-#    np.savetxt(output_mass_frac,mass_fraction)
-    np.savetxt(output_WHIM_data,WHIM_data)
-    np.savetxt(output_WHIM_data+'.troubleshoot.txt',WHIM_troubleshoot)
+#    np.savetxt(output_mass_frac,mass_fraction, header = 'mWHIM,mCond,mDif,mHalo')
+    np.savetxt(output_WHIM_data,WHIM_data,header='ID, mass, radius (Mpc/h), WHIM sizes (Mpc/h)')
+    np.savetxt(output_WHIM_data+'.troubleshoot.txt',WHIM_troubleshoot, header='# with no WHIM')
     
 
 def read_data(path_to_data):
@@ -123,10 +123,12 @@ def analyze(rho_bar,temp,halo_data,l,size):
     # Dask version
     # Use dask to read in arrays. Define chunk size as 1/4 in each direction:
     chunk = int(l/4)
-    r = da.from_array(rho, chunks=(chunk,chunk,chunk))
+    r = da.from_array(rho_bar, chunks=(chunk,chunk,chunk))
     t = da.from_array(temp, chunks=(chunk,chunk,chunk))
-    for i in len(range(halo_data)):
+    for i in range(len(halo_data)):
         WHIM_data[i,0:3] = halo_data[i,3::]
+        # Set to physical size:
+        WHIM_data[i,2] *= size/l
         WHIM_data[i,3::], WHIM_troubleshoot[i] = da_WHIM_size(r,t,l,size,halo_data[i,0],halo_data[i,1],halo_data[i,2])
 
     return np.column_stack([mWHIM,mCond,mDif,mHalo]), WHIM_data, WHIM_troubleshoot
