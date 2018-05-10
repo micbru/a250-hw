@@ -154,8 +154,8 @@ def mass_fraction(rho,temp,bl):
     brho_avg = rho.mean()
     bmass = brho_avg*bl**3 # bl**3 is volume of box.
     
-    rhoWHIM = rho[(rho<rhoMax) & (temp<tMin)]
-    rhoCond = rho[(rho>rhoMax) & (temp>tMin)]
+    rhoWHIM = rho[(rho<rhoMax) & (temp>tMin)]
+    rhoCond = rho[(rho>rhoMax) & (temp<tMin)]
     rhoDif = rho[(rho<rhoMax) & (temp<tMin)]
     rhoHalo = rho[(rho>rhoMax) & (temp>tMin)]
 
