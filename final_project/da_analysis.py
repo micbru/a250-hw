@@ -151,19 +151,24 @@ def mass_fraction(rho,temp,bl):
         returns mWHIM, mCond, mDif, mHalo.
     '''
     # Calculate necessary means:
-    brho_avg = rho.mean()
+    brho_avg = rho.mean().compute()
     bmass = brho_avg*bl**3 # bl**3 is volume of box.
     
-    rhoWHIM = rho[(rho<rhoMax) & (temp>tMin)]
-    rhoCond = rho[(rho>rhoMax) & (temp<tMin)]
-    rhoDif = rho[(rho<rhoMax) & (temp<tMin)]
-    rhoHalo = rho[(rho>rhoMax) & (temp>tMin)]
+    rho_args = rho<rhoMax
+    t_args = temp>tMin
+    
+    rhoWHIM = rho[rho_args & t_args]
+    rhoCond = rho[~rho_args & ~t_args]
+    rhoDif = rho[rho_args & ~t_args]
+    rhoHalo = rho[~rho_args & t_args]
+    
+    del rho_args, t_args
 
     # Now calculate the amount of mass in each fraction.
-    mWHIM = (rhoWHIM.sum()/bmass).compute()
-    mCond = (rhoCond.sum()/bmass).compute()
-    mDif = (rhoDif.sum()/bmass).compute()
-    mHalo = (rhoHalo.sum()/bmass).compute()
+    mWHIM = rhoWHIM.sum().compute()/bmass
+    mCond = rhoCond.sum().compute()/bmass
+    mDif = rhoDif.sum().compute()/bmass
+    mHalo = rhoHalo.sum().compute()/bmass
 
     return mWHIM, mCond, mDif, mHalo
 
