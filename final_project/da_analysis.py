@@ -26,7 +26,7 @@ def main(path_to_data,path_to_catalog,output_mass_frac,output_WHIM_data):
     # Output to text.
 #    np.savetxt(output_mass_frac,mass_fraction, header = 'mWHIM,mCond,mDif,mHalo')
     np.savetxt(output_WHIM_data,WHIM_data,header='ID, mass, radius (Mpc/h), WHIM sizes (Mpc/h)')
-    np.savetxt(output_WHIM_data+'.troubleshoot.txt',WHIM_troubleshoot, header='# with no WHIM')
+    np.savetxt(output_WHIM_data+'.troubleshoot.txt',WHIM_troubleshoot, header='n with no WHIM')
     
 
 def read_data(path_to_data):
@@ -110,10 +110,10 @@ def analyze(rho_bar,temp,halo_data,l,size):
     nb = l//bl  # Number of boxes along one dimension
 
     # Initialize the arrays that will store the mean for each box.
-    mWHIM = 0#np.zeros(nb**3)
-    mCond = 0#np.zeros(nb**3)
-    mDif = 0#np.zeros(nb**3)
-    mHalo = 0#np.zeros(nb**3)
+    mWHIM = np.zeros(nb**3)
+    mCond = np.zeros(nb**3)
+    mDif = np.zeros(nb**3)
+    mHalo = np.zeros(nb**3)
 
     # Initialize the array for the WHIM sizes
     # 29 is a magic number: we have 26 directions, plus we want halo ID, halo mass, and halo radius
@@ -121,20 +121,27 @@ def analyze(rho_bar,temp,halo_data,l,size):
     WHIM_troubleshoot = np.zeros([len(halo_data)])#,3])
     
     # Dask version
-    # Use dask to read in arrays. Define chunk size as 1/4 in each direction:
-    chunk = int(l/4)
-    r = da.from_array(rho_bar, chunks=(chunk,chunk,chunk))
-    t = da.from_array(temp, chunks=(chunk,chunk,chunk))
+    # Use dask to read in arrays. Define chunk size as 1/4 in each direction (as bl)
+    r = da.from_array(rho_bar, chunks=(bl,bl,bl))
+    t = da.from_array(temp, chunks=(bl,bl,bl))
+    
+    # Mass fractions
+    for i in range(nb):
+        for j in range(nb):
+            for k in range(nb):
+                 mWHIM[i+nb*j+nb*nb*k], mCond[i+nb*j+nb*nb*k], mDif[i+nb*j+nb*nb*k], mHalo[i+nb*j+nb*nb*k] 
+                    = mass_fraction(r[i*bl:bl*(i+1)+1,j*bl:bl*(j+1)+1,k*bl:bl*(k+1)+1],t[i*bl:bl*(i+1)+1,j*bl:bl*(j+1)+1,k*bl:bl*(k+1)+1],bl)
+
+    # WHIM sizes
     for i in range(len(halo_data)):
         WHIM_data[i,0:3] = halo_data[i,3::]
         # Set to physical size:
         WHIM_data[i,2] *= size/l
-        WHIM_data[i,3::], WHIM_troubleshoot[i] = da_WHIM_size(r,t,l,size,halo_data[i,0],halo_data[i,1],halo_data[i,2])
+        WHIM_data[i,3::], WHIM_troubleshoot[i] = WHIM_size(r,t,l,size,halo_data[i,0],halo_data[i,1],halo_data[i,2])
 
     return np.column_stack([mWHIM,mCond,mDif,mHalo]), WHIM_data, WHIM_troubleshoot
     
-# Dask version
-def da_mass_fraction(rho,temp,bl):
+def mass_fraction(rho,temp,bl):
     '''
     Get the max fraction for a small box of size bl:
     Inputs:
@@ -161,7 +168,7 @@ def da_mass_fraction(rho,temp,bl):
 
     return mWHIM, mCond, mDif, mHalo
 
-def da_WHIM_size(r, t, l, size, halo_i, halo_j, halo_k):
+def WHIM_size(r, t, l, size, halo_i, halo_j, halo_k):
     '''
     This function will take in simulation data and a halo catalog as dask arrays
     before finding the radial extent of the WHIM in 13 directions away (both ways, total 26) from the center of 

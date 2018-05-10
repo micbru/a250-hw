@@ -112,10 +112,10 @@ def analyze(rho_bar,temp,halo_data,l,size):
 #    buf = int(6*large_halo) # Use a buffer of magic number*the largest halo radius
 
     # Initialize the arrays that will store the mean for each box.
-    mWHIM = 0#np.zeros(nb**3)
-    mCond = 0#np.zeros(nb**3)
-    mDif = 0#np.zeros(nb**3)
-    mHalo = 0#np.zeros(nb**3)
+    mWHIM = np.zeros(nb**3)
+    mCond = np.zeros(nb**3)
+    mDif = np.zeros(nb**3)
+    mHalo = np.zeros(nb**3)
 
     # Initialize the array for the WHIM sizes
     # 29 is a magic number: we have 26 directions, plus we want halo ID, halo mass, and halo radius
@@ -135,7 +135,7 @@ def analyze(rho_bar,temp,halo_data,l,size):
                 rho_sub = rho_bar[ii:ii+bl+1,jj:jj+bl+1,kk:kk+bl+1]
                 t_sub = temp[ii:ii+bl+1,jj:jj+bl+1,kk:kk+bl+1]
                 # Use mass_fraction function, only reading in without buffer
-#                mWHIM[i+nb*j+nb*nb*k], mCond[i+nb*j+nb*nb*k], mDif[i+nb*j+nb*nb*k], mHalo[i+nb*j+nb*nb*k] = mass_fraction(rho_sub[buf:-buf,buf:-buf,buf:-buf],t_sub[buf:-buf,buf:-buf,buf:-buf],bl)
+                mWHIM[i+nb*j+nb*nb*k], mCond[i+nb*j+nb*nb*k], mDif[i+nb*j+nb*nb*k], mHalo[i+nb*j+nb*nb*k] = mass_fraction(rho_sub,t_sub,bl)
 
                 # Now find all halos in this subarray. Loop through entire array.
                 halo_list = []
