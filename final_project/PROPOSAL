@@ -1,0 +1,10 @@
+This is the code submitted for my final project. After the initial commit (34ab28d7104c7a97bf6ad3e6035c24959cfa930b, Wed May 2 15:20:50 2018 -0700), here is a list of things that I will do as part of my project:
+- I will make a plotting notebook, rather than a plot.py file, and include interactive plots made in bokeh that I can save from the notebook.
+- I will make a dask version of analysis.py.
+- I will make a testing suite for each function in analysis. This will require getting a test data set from NERSC that I can use.
+- I will improve all of my docstrings.
+- I may try to implement some cython, if it makes sense.
+
+The directory is set up so that each of the two large files I analyze has it’s own folder (2048z3 and 4096z05) for data and plots. catalogs will contain the required halo catalogs, and data will include the subset of test data I am using.
+
+There are also several python notebooks for testing out new implementations, as well as troubleshooting.
