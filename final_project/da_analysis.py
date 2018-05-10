@@ -24,7 +24,7 @@ def main(path_to_data,path_to_catalog,output_mass_frac,output_WHIM_data):
     mass_fraction, WHIM_data, WHIM_troubleshoot = analyze(rho_bar,temp,halo_data,l,size)
     
     # Output to text.
-#    np.savetxt(output_mass_frac,mass_fraction, header = 'mWHIM,mCond,mDif,mHalo')
+    np.savetxt(output_mass_frac,mass_fraction, header = 'mWHIM,mCond,mDif,mHalo')
     np.savetxt(output_WHIM_data,WHIM_data,header='ID, mass, radius (Mpc/h), WHIM sizes (Mpc/h)')
     np.savetxt(output_WHIM_data+'.troubleshoot.txt',WHIM_troubleshoot, header='n with no WHIM')
     
@@ -129,8 +129,7 @@ def analyze(rho_bar,temp,halo_data,l,size):
     for i in range(nb):
         for j in range(nb):
             for k in range(nb):
-                 mWHIM[i+nb*j+nb*nb*k], mCond[i+nb*j+nb*nb*k], mDif[i+nb*j+nb*nb*k], mHalo[i+nb*j+nb*nb*k] 
-                    = mass_fraction(r[i*bl:bl*(i+1)+1,j*bl:bl*(j+1)+1,k*bl:bl*(k+1)+1],t[i*bl:bl*(i+1)+1,j*bl:bl*(j+1)+1,k*bl:bl*(k+1)+1],bl)
+                 mWHIM[i+nb*j+nb*nb*k], mCond[i+nb*j+nb*nb*k], mDif[i+nb*j+nb*nb*k], mHalo[i+nb*j+nb*nb*k] = mass_fraction(r[i*bl:bl*(i+1)+1,j*bl:bl*(j+1)+1,k*bl:bl*(k+1)+1],t[i*bl:bl*(i+1)+1,j*bl:bl*(j+1)+1,k*bl:bl*(k+1)+1],bl)
 
     # WHIM sizes
     for i in range(len(halo_data)):
