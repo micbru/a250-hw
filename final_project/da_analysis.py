@@ -24,7 +24,7 @@ def main(path_to_data,path_to_catalog,output_mass_frac,output_WHIM_data):
     mass_fraction, WHIM_data, WHIM_troubleshoot = analyze(rho_bar,temp,halo_data,l,size)
     
     # Output to text.
-    np.savetxt(output_mass_frac,mass_fraction, header = 'mWHIM,mCond,mDif,mHalo')
+#    np.savetxt(output_mass_frac,mass_fraction, header = 'mWHIM,mCond,mDif,mHalo')
     np.savetxt(output_WHIM_data,WHIM_data,header='ID, mass, radius (Mpc/h), WHIM sizes (Mpc/h)')
     np.savetxt(output_WHIM_data+'.troubleshoot.txt',WHIM_troubleshoot, header='n with no WHIM')
     
@@ -94,7 +94,7 @@ def read_catalog(path_to_catalog,mass_cutoff):
 
     # Now return only those below the mass cutoff
     i_cutoff = np.searchsorted(mass,mass_cutoff)
-    print("Total number of halos above logM = {}: {}".format(np.log10(mass_cutoff),len(mass)-i_cutoff))
+    #print("Total number of halos above logM = {}: {}".format(np.log10(mass_cutoff),len(mass)-i_cutoff))
     return np.column_stack([x[i_cutoff::], y[i_cutoff::], z[i_cutoff::], ID[i_cutoff::], mass[i_cutoff::], r[i_cutoff::]])
 
 
@@ -125,14 +125,16 @@ def analyze(rho_bar,temp,halo_data,l,size):
     r = da.from_array(rho_bar, chunks=(bl,bl,bl))
     t = da.from_array(temp, chunks=(bl,bl,bl))
     
-    # Mass fractions
-    for i in range(nb):
-        for j in range(nb):
-            for k in range(nb):
-                 mWHIM[i+nb*j+nb*nb*k], mCond[i+nb*j+nb*nb*k], mDif[i+nb*j+nb*nb*k], mHalo[i+nb*j+nb*nb*k] = mass_fraction(r[i*bl:bl*(i+1)+1,j*bl:bl*(j+1)+1,k*bl:bl*(k+1)+1],t[i*bl:bl*(i+1)+1,j*bl:bl*(j+1)+1,k*bl:bl*(k+1)+1],bl)
+    # Mass fraction
+    if False:
+        for i in range(nb):
+            for j in range(nb):
+                for k in range(nb):
+                     mWHIM[i+nb*j+nb*nb*k], mCond[i+nb*j+nb*nb*k], mDif[i+nb*j+nb*nb*k], mHalo[i+nb*j+nb*nb*k] = mass_fraction(r[i*bl:bl*(i+1)+1,j*bl:bl*(j+1)+1,k*bl:bl*(k+1)+1],t[i*bl:bl*(i+1)+1,j*bl:bl*(j+1)+1,k*bl:bl*(k+1)+1],bl)
 
     # WHIM sizes
     for i in range(len(halo_data)):
+        print("Halo number: {}/{}".format(i+1, len(halo_data)))
         WHIM_data[i,0:3] = halo_data[i,3::]
         # Set to physical size:
         WHIM_data[i,2] *= size/l
@@ -222,7 +224,7 @@ def WHIM_size(r, t, l, size, halo_i, halo_j, halo_k):
 
         ### FORWARD
         # Now we need to check temperature
-        if (t[tuple(fwd_i)] < tMin):
+        if (t[tuple(fwd_i%l)] < tMin):
             # It's possible we are still in the halo, but there is probably no WHIM here.
             fwd_i = halo_loc # Set this so that we get NaN for WHIMsize.
             n_noWHIM += 1
@@ -233,7 +235,7 @@ def WHIM_size(r, t, l, size, halo_i, halo_j, halo_k):
 
         ### BACKWARD
         # Now we need to check temperature, if we didn't already hit a boundary
-        if (t[tuple(bck_i)] < tMin):
+        if (t[tuple(bck_i%l)] < tMin):
             # It's possible we are still in the halo, but much more likely there just is no WHIM.
             bck_i = halo_loc # Set this so that we get NaN for WHIMsize.
             n_noWHIM += 1

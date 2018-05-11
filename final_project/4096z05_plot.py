@@ -6,11 +6,11 @@ path = './4096z05'
 mWHIM,mCond,mDif,mHalo = np.loadtxt(path+'/mass_fraction.txt',unpack=True)
 # Don't need these since I put them in the other catalog
 #halo_ID, halo_mass, halo_r = np.loadtxt(path+'/WHIM_data.txt',unpack=True,usecols=(0,1,2)) # Get these seperate from WHIM_data
-WHIM_data = np.loadtxt(path+'/WHIM_data.txt',usecols=range(3,29)) # Unpack the 26 directions of WHIM_data
+WHIM_data = np.loadtxt(path+'/da_WHIM_data.txt',usecols=range(3,29)) # Unpack the 26 directions of WHIM_data
 
 # Get m200 and m180 data also.
 # Read in:
-IDs, m, r, m200, r200, m180, r180 = np.loadtxt('./catalogs/catalog_iso138_200_180.txt',usecols=(0,4,5,6,7,8,9),unpack=True)
+IDs, m, r, m200, r200, m180, r180 = np.loadtxt('./catalogs/catalog_iso138_200_180_trimmed.txt',usecols=(0,4,5,6,7,8,9),unpack=True)
 
 # Make a list of halo_IDs we need:
 ID_list = np.loadtxt(path+'/WHIM_data.txt',usecols=0)
