@@ -1,3 +1,16 @@
-Here I will summarize what I accomplished in this project, and how that relates to my initial goals.
+Here I summarize what I accomplished in this project, and how that relates to my initial goals.
 
-Dask version for test set was much slower, but for 2048 dataset went from ~5m to ~5s (for the WHIM sizes). However, when I included the mass fraction function, it went back up to ~7m. It turns out that isn't the good way to do it, but the WHIM size way seems to be better.
+My first goal was to make a plotting notebook I could use locally, instead of having to plot from a script remotely. I also wanted to play around more with bokeh after using it in class, since I think it works better for the data I am using. I was successful on this point, and learned a lot about bokeh! My plots look way better, even though I couldn't get the interactivity to work exactly how I wanted it. I also included a linear regression fit, which I'll have to play around with more, but yay sklearn!
+
+The second main goal was to make da_analysis.py. This worked even better than expected. On the small dataset (64^3), I found dask significantly slower, but for 2048 dataset I went from ~5m to ~5s (for the WHIM sizes). This was great as previously it took ~8hr to run for the 4096 set, which was reduced to a few hours (I didn't time it accurately). 
+The best news in all of this is that before, when the WHIM left the sub box of the dataset I had read into memory, I had no way to retrieve that data point and was left with a nan in my set. This occured for nearly 10% of my data points! Dask dealth with all of this on it's own, and would just read from the adjacent chunk.
+The bad news is that when I included the dask implementation of the mass fraction function, my 2048 set went back up to ~7m. It turns out the dask implementation here is no good, so after this I will write new code with a function for non-dask mass fraction analysis, but dask WHIM size analysis.
+
+One other goal was to create unit tests, which sadly I ran out of time for. However, I did create a small test set and used Testing.ipynb extensively when creating my dask implemenatations. I also used the line_profiler we mentioned in class to help figure out where I can speed the code up on the small set!
+
+I also wanted to implement cython, but that was pretty ambitious, and it turns out not needed since the speed I have is actually ok.
+
+Overall I learned a lot about dask and bokeh, and got to put a bunch of my code into nicer notebooks for the future. These implementations and functions will be fine tuned and put back into my main research folder so I can analyse more sets of data and see how my plots change over redshift, and get more data for different halo masses.
+
+Thanks for a great course!
+Micah

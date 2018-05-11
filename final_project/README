@@ -1,1 +1,26 @@
-This will explain the directory structure once it is cleaner
+This explains the directory structure. For a list of what was initially proposed, see "PROPOSAL", and for a summary of the project, see "PROJECT".
+
+#### OVERALL
+This was my final project for A250. The goal was to take in large box simulations and perform two analyses:
+First, find the size of the WHIM around all halos (from a halo catalog) greater than some cutoff mass. This is hard from a data perspective, and the main part of this project. Once I have this data, I want to plot it using bokeh instead of matplotlib. I will have fairly customized boxplots for this data.
+Second, divide the large box into 64 small boxes and find the mass fraction of matter in each of four "phases", WHIM, Condensed, Diffuse, and Hot Halo. These will then be plotted in histograms. The goal here is to show that these smaller boxes have enough variance to not be super reliable on their own, as well as to show how these "phases" evolve over time. 
+
+#### FILES
+The *.py files that do not begin with da_ are nearly unedited from what they were before. These files are no longer in use, but I wanted to keep them around so it would be easier to see the progress. 
+
+The da_*.py files are dask implementations of the code I already had.
+
+The "analysis" files contain all of the functions needed to analyse the large datasets.
+
+The 2048z3 files point to a smaller 2048^3 dataset that I used to test my functions. While I didn't end up with a "test" with individual unit tests, I did all of my tests with these files. Also in terms of testing, I imported a small set and did very small scale testing in Testing.ipynb.
+
+The 4096z05 files are really to ensure that my code scales and will work on the larger datasets I need it to later. These point to a 4096^3 dataset that has a proper halo catalog.
+
+In terms of plotting, all of the "plot" files were replaced in utility by ipython notebooks. These are MF_Plot.ipynb, which plots the mass fraction data, and WHIM_Plot.ipynb, which plots all of the WHIM size data.
+
+#### SUBFOLDERS
+The data subfolder contains the subsets (64^3) of the large data I took for github. This was originally intended for unit tests, but was instead used in Testing.ipynb. It is centered around the halo in "catalog.txt" from the 2048 dataset. Note this means we lost periodic BCs.
+
+The catalogs subfolder contains the trimmed halo catalog "catalog_iso138_200_180_trimmed.txt" for the 4096 set with all of the different mass definitions (m from iso contours, m200, m180), and a made up catalog "catalog.txt" for a single halo in the 2048 set.
+
+The 2048z3 and 4096z05 folders contain all of the previous output plots from the "plot.py" function, as well as all of the data we get from the analysis. The data is stored as WHIM_data.txt for the WHIM sizes, which also has a .troubleshoot.txt version for ensuring we are getting all the halo data. There is also a mass_fraction.txt for the mass fraction data, and a universe_data for holding info about the simulation without having to go back to the hdf5 file.
