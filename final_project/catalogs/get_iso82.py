@@ -17,7 +17,7 @@ path_to_catalog = '/global/cscratch1/sd/zarija/4096/catalog_z05_iso82.txt'
 ID82, mass, size = np.loadtxt(path_to_catalog,converters=converters,dtype=dtypes,usecols=cols,unpack=True)
 
 # Find the halos that have the correct ID
-ID138 = np.loadtxt('catalog_iso138_200_180.txt',usecols=0,unpack=True,dtype='int')
+ID138 = np.loadtxt('catalog_iso138_200_180_trimmed.txt',usecols=0,unpack=True,)
 ID_args = [int(np.argwhere(ID82==ID)) for ID in ID138]
 
 # Get IDs, mass, and size
@@ -26,7 +26,7 @@ mass_s = mass[ID_args]
 size_s = size[ID_args]
 
 # Now make halo_r from halo_size
-r = (size_s/np.pi/4.*3.)**(1./3.)
+r = np.around((size_s/np.pi/4.*3.)**(1./3.))
 
 d82 = np.column_stack([ID82_s,mass_s,r])
 
